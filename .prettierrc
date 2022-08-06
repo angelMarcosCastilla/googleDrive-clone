@@ -1,0 +1,7 @@
+{
+	"useTabs": true,
+	"singleQuote": true,
+	"jsxSingleQuote": true,
+	"maxLineLength": 140,
+	"arrowParens": "avoid"
+}
