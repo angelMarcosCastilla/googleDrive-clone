@@ -115,6 +115,12 @@ export const StyledListMenuItem = styled(ListItem)(({ theme }) => ({
 	'& > svg': {
 		color: theme.palette.neutral.main,
 	},
+	"& a":{
+		textDecoration:"none",
+		color	:theme.palette.neutral.main,
+		display:"flex",
+		gap:"20px"
+	}
 }));
 
 export const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
