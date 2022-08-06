@@ -2,6 +2,6 @@
 	"useTabs": true,
 	"singleQuote": true,
 	"jsxSingleQuote": true,
-	"maxLineLength": 140,
+	"maxLineLength": 120,
 	"arrowParens": "avoid"
 }
