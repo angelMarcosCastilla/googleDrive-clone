@@ -42,6 +42,7 @@ import {
 	StyledListMenuItem,
 	StyledNewButton,
 } from './styled';
+import Breadcrumbss from '../components/Breadcrumbs';
 
 const style = {
 	position: 'absolute',
@@ -409,6 +410,7 @@ function PrimarySearchAppBar({ children }) {
 				</Box>
 			</aside>
 			<main id='content'>
+				<Breadcrumbss></Breadcrumbss>
 				<Outlet />
 			</main>
 		</LayoutStyles>

@@ -56,3 +56,7 @@ img {
 
 	color: #1A73E8 !important;
 } 
+
+.breadcrumbs li:last-child{
+	font-size: 1.1rem;
+}
