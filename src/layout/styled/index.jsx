@@ -95,7 +95,7 @@ export const StyledListMenuItem = styled(ListItem)(({ theme }) => ({
 	display: 'flex',
 	alignItems: 'center',
 	position: 'relative',
-	paddingLeft: '25px',
+	
 	gap: '20px',
 	borderRadius: '0 25px 25px 0',
 	'&:hover': {
@@ -119,7 +119,12 @@ export const StyledListMenuItem = styled(ListItem)(({ theme }) => ({
 		textDecoration:"none",
 		color	:theme.palette.neutral.main,
 		display:"flex",
-		gap:"20px"
+		gap:"20px",
+		borderRadius:"0 25px 25px 0",
+		padding:"4px 0",
+		width:"100%",
+		paddingLeft: '25px',
+
 	}
 }));
 

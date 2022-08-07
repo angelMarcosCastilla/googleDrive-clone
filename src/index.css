@@ -47,3 +47,12 @@ img {
 	display: grid;
 	place-content: center;
 }
+
+.active{
+	background-color: #E8F0FE;
+	color: #1A73E8 !important;
+}
+.active *{
+
+	color: #1A73E8 !important;
+} 
