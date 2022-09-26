@@ -2,6 +2,7 @@ import { Card, CardContent, CardMedia, Grid, Typography } from '@mui/material';
 import { grey } from '@mui/material/colors';
 import React from 'react';
 import ContainerDocuments from '../../components/ContainerDocuments';
+
 export default function Home() {
 	return (
 		<section style={{ paddingRight: '15px' }}>

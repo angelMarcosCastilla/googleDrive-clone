@@ -10,3 +10,13 @@ export const parsestructureFolders = (folders) => {
 
   return result;
 }
+
+export function subnivelesFolder(folder, parentFolder= "root") {
+  let parseFolders = []
+  const folders = folder.filter((el) => el.folder_root === parentFolder);
+  for(let i=0; i< folders.length; i++){
+    const currentFolderParent = folders[i].name
+    parseFolders=[...parseFolders, {...folders[i], 	subCarpetas:subnivelesFolder(folder,currentFolderParent)}]
+  }
+  return parseFolders
+}

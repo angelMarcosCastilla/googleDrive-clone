@@ -90,12 +90,11 @@ export const StyledNewButton = styled(Button)(({ theme }) => ({
 }));
 
 export const StyledListMenuItem = styled(ListItem)(({ theme }) => ({
-	padding: '7px 0',
+	padding: '1px 0',
 	fontSize: '13px !important',
 	display: 'flex',
 	alignItems: 'center',
 	position: 'relative',
-	
 	gap: '20px',
 	borderRadius: '0 25px 25px 0',
 	'&:hover': {
@@ -108,8 +107,6 @@ export const StyledListMenuItem = styled(ListItem)(({ theme }) => ({
 		color: theme.palette.neutral.main,
 	},
 	'& .MuiSvgIcon-root': {
-		position: 'absolute',
-		left: '3px',
 		color: theme.palette.neutral.main,
 	},
 	'& > svg': {
@@ -125,8 +122,17 @@ export const StyledListMenuItem = styled(ListItem)(({ theme }) => ({
 		width:"100%",
 		paddingLeft: '25px',
 
+	},
+	"& button":{
+		color:"red",
+		position:"absolute",
+		left:"-8px",
+		"&:hover":{
+			opacity:0.8
+		}
 	}
 }));
+
 
 export const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
 	height: 4,

@@ -1,4 +1,3 @@
-import * as React from 'react';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
@@ -19,7 +18,7 @@ import {
 	Stack,
 	TextField,
 } from '@mui/material';
-
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import { Link, NavLink, Outlet, useParams } from 'react-router-dom';
 import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
@@ -31,7 +30,7 @@ import AvatarMenu from '../components/AvatarMenu';
 import { createFolder } from '../services/folders';
 import { useDispatch, useSelector } from 'react-redux';
 import { addFoderStructure, addFolder } from '../store/slices/folderSlice';
-import { parsestructureFolders } from '../utils/foldersUtils';
+import { parsestructureFolders, subnivelesFolder } from '../utils/foldersUtils';
 import {
 	BorderLinearProgress,
 	LayoutStyles,
@@ -43,6 +42,8 @@ import {
 	StyledNewButton,
 } from './styled';
 import Breadcrumbss from '../components/Breadcrumbs';
+import CollapseMenu from '../components/CollapseMenu';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 const style = {
 	position: 'absolute',
@@ -58,17 +59,21 @@ const style = {
 };
 
 function PrimarySearchAppBar({ children }) {
-	const [anchorEl, setAnchorEl] = React.useState(null);
-	const params = useParams();
-	const [openModalNewFolder, setOpenModalNewFolder] = React.useState(false);
-	const nameFolder = React.useRef();
-	const open = Boolean(anchorEl);
+	const [anchorEl, setAnchorEl] = useState(null);
+	const [openModalNewFolder, setOpenModalNewFolder] = useState(false);
+	const [toggle, setToggle] = useState(false);
+	const nameFolder = useRef();
 	const user = useSelector(state => state.user);
-	const dispatch = useDispatch();
 	const { folders } = useSelector(state => state.folders);
+	const dispatch = useDispatch();
+	const params = useParams();
+
+	const open = Boolean(anchorEl);
+
 	const handleClick = event => {
 		setAnchorEl(event.currentTarget);
 	};
+
 	const handleClose = e => {
 		setAnchorEl(null);
 	};
@@ -98,10 +103,14 @@ function PrimarySearchAppBar({ children }) {
 		});
 	};
 
-	React.useEffect(() => {
+	useEffect(() => {
 		const structureFolderData = parsestructureFolders(folders);
 		dispatch(addFoderStructure(structureFolderData));
 	}, [folders]);
+
+	const menuFolder = useMemo(() => {
+		return subnivelesFolder(folders);
+	}, []);
 
 	return (
 		<LayoutStyles>
@@ -255,7 +264,17 @@ function PrimarySearchAppBar({ children }) {
 				<Box marginTop={1}>
 					<List sx={{ padding: '0' }}>
 						<StyledListMenuItem>
-							<NavLink className={({isActive}) => isActive ? "active": ""} to='/'>
+							<IconButton
+								onClick={() => setToggle(prevToogle => !prevToogle)}
+								sx={{ transform: toggle ? 'rotate(90deg)' : '' }}
+								disableRipple
+							>
+								<PlayArrowIcon />
+							</IconButton>
+							<NavLink
+								className={({ isActive }) => (isActive ? 'active' : '')}
+								to='/'
+							>
 								<svg
 									width='24px'
 									height='24px'
@@ -269,7 +288,9 @@ function PrimarySearchAppBar({ children }) {
 								<ListItemText primary='Archivos' />
 							</NavLink>
 						</StyledListMenuItem>
-
+						<Box paddingLeft={2}>
+						{toggle && <CollapseMenu folders={menuFolder}></CollapseMenu>}
+						</Box>
 						<StyledListMenuItem>
 							<NavLink to='/pc'>
 								<svg
@@ -286,7 +307,10 @@ function PrimarySearchAppBar({ children }) {
 							</NavLink>
 						</StyledListMenuItem>
 						<StyledListMenuItem>
-							<NavLink className={({isActive}) => isActive ? "active": ""} to='/share'>
+							<NavLink
+								className={({ isActive }) => (isActive ? 'active' : '')}
+								to='/share'
+							>
 								<svg
 									width='24px'
 									height='24px'
@@ -304,7 +328,10 @@ function PrimarySearchAppBar({ children }) {
 							</NavLink>
 						</StyledListMenuItem>
 						<StyledListMenuItem>
-							<NavLink className={({isActive}) => isActive ? "active": ""} to='/recientes'>
+							<NavLink
+								className={({ isActive }) => (isActive ? 'active' : '')}
+								to='/recientes'
+							>
 								<svg
 									width='24px'
 									height='24px'
@@ -320,7 +347,10 @@ function PrimarySearchAppBar({ children }) {
 							</NavLink>
 						</StyledListMenuItem>
 						<StyledListMenuItem>
-							<NavLink className={({isActive}) => isActive ? "active": ""} to='/destacados'>
+							<NavLink
+								className={({ isActive }) => (isActive ? 'active' : '')}
+								to='/destacados'
+							>
 								<svg
 									width='24px'
 									height='24px'
@@ -334,7 +364,10 @@ function PrimarySearchAppBar({ children }) {
 							</NavLink>
 						</StyledListMenuItem>
 						<StyledListMenuItem>
-							<NavLink className={({isActive}) => isActive ? "active": ""} to='/papelera'>
+							<NavLink
+								className={({ isActive }) => (isActive ? 'active' : '')}
+								to='/papelera'
+							>
 								<svg
 									width='24px'
 									height='24px'

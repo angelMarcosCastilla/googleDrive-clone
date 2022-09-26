@@ -13,7 +13,6 @@ const getParentsFolder = (folder, folders) => {
 		currentFolder = folders.find(f => f.name === currentFolder.folder_root);
 	}
 	return parents.reverse();
-	
 };
 
 const LinkStyled = styled(Link)(({ theme }) => ({
@@ -24,15 +23,13 @@ const LinkStyled = styled(Link)(({ theme }) => ({
 	'&:hover': {
 		color: theme.palette.grey["800"],
 		backgroundColor: theme.palette.grey["200"],
-
 	},
-	
-	
 }))
+
 export default function Breadcrumbss() {
 	const location = useLocation();
 	const { folders } = useSelector(state => state.folders);
-
+  
 	const breadcrumbsData = useMemo(() => {
 		const folderIdofpath = location.pathname === '/' ? 'root' : location.pathname.split('/')[2];
 		const breadcrumbsItems = [{ name: 'root', id: 'root' }];
@@ -43,7 +40,6 @@ export default function Breadcrumbss() {
 		return [...breadcrumbsItems, ...getParentsFolder(foldersInfo, folders)];
 	}, [location]);
  
-	console.log({breadcrumbsData});
 	return (
 		<Stack spacing={2} mb={3}>
 			<Breadcrumbs

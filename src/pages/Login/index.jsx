@@ -20,6 +20,7 @@ const StyledButtonGoogle = styled(Button)({
 		color: '#fff',
 	},
 });
+
 export default function Login() {
 	const navigate = useNavigate();
 	const { hasUser, loaderSession } = useUser();
@@ -31,6 +32,7 @@ export default function Login() {
 	}, [hasUser, navigate]);
 
 	if (hasUser === undefined) return <Loader />;
+	
 	return (
 		<Stack alignItems='center' justifyContent='center' sx={{ height: '100vh' }}>
 			<Stack

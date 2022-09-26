@@ -10,7 +10,6 @@ export default function useUser() {
   const [hasUser, setHasUser] = useState(undefined);
   const [loaderSession, setLoaderSession] = useState(false);
   const dispatch = useDispatch();
-  console.log("remder")
   useEffect(() => {
     const user = clientSupabase.auth.user();
     if (user) {
