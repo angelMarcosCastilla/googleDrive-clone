@@ -44,6 +44,8 @@ import {
 import Breadcrumbss from '../components/Breadcrumbs';
 import CollapseMenu from '../components/CollapseMenu';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { createFile, uploadFile } from '../services/file';
+import { addFile } from '../store/slices/fileSlice';
 
 const style = {
 	position: 'absolute',
@@ -67,7 +69,7 @@ function PrimarySearchAppBar({ children }) {
 	const { folders } = useSelector(state => state.folders);
 	const dispatch = useDispatch();
 	const params = useParams();
-
+	const uploadFileInput = useRef();
 	const open = Boolean(anchorEl);
 
 	const handleClick = event => {
@@ -76,6 +78,33 @@ function PrimarySearchAppBar({ children }) {
 
 	const handleClose = e => {
 		setAnchorEl(null);
+	};
+
+	const uploadFileOpen = () => {
+		uploadFileInput.current.click();
+	};
+
+	const handleChangeFile = async e => {
+		e.preventDefault();
+		const file = e.target.files[0];
+		try {
+			const response = await uploadFile(file, user.id);
+			const { data } = response;
+			try {
+				const paramsId = params.id ?? 0;
+				const fileData = await createFile({
+					name: data.Key.split('/')[1],
+					key: `https://ygqihtikkuettwfmtcjp.supabase.co/storage/v1/object/public/${data.Key}`,
+					foldersId: Number(paramsId),
+					userId: user.id,
+				});
+				console.log(fileData)
+				dispatch(addFile(fileData.data[0]));
+			} catch (error) {}
+			setAnchorEl(null);
+		} catch (error) {
+			console.log(error);
+		}
 	};
 
 	const handleOpenModalNewFolder = e => {
@@ -216,10 +245,17 @@ function PrimarySearchAppBar({ children }) {
 						<ListItemText>Carpeta</ListItemText>
 					</MenuItem>
 					<Divider />
-					<MenuItem onClick={handleClose}>
+					<MenuItem onClick={uploadFileOpen}>
 						<ListItemIcon>
 							<UploadFileOutlinedIcon />
 						</ListItemIcon>
+						<input
+							type='file'
+							accept="image/*"
+							hidden
+							ref={uploadFileInput}
+							onChange={handleChangeFile}
+						/>
 						<ListItemText>Archivos</ListItemText>
 					</MenuItem>
 					<MenuItem onClick={handleClose}>
@@ -289,7 +325,7 @@ function PrimarySearchAppBar({ children }) {
 							</NavLink>
 						</StyledListMenuItem>
 						<Box paddingLeft={2}>
-						{toggle && <CollapseMenu folders={menuFolder}></CollapseMenu>}
+							{toggle && <CollapseMenu folders={menuFolder}></CollapseMenu>}
 						</Box>
 						<StyledListMenuItem>
 							<NavLink to='/pc'>

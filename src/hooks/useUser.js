@@ -5,25 +5,28 @@ import { getFoldersUsers } from '../services/folders';
 import { loginUser } from '../store/slices/userSlice';
 import { parsestructureFolders } from '../utils/foldersUtils';
 import { addAllFolder, addFoderStructure } from '../store/slices/folderSlice';
+import { getFiles } from '../services/file';
+import { addAllFile } from '../store/slices/fileSlice';
 
 export default function useUser() {
   const [hasUser, setHasUser] = useState(undefined);
   const [loaderSession, setLoaderSession] = useState(false);
   const dispatch = useDispatch();
+
   useEffect(() => {
     const user = clientSupabase.auth.user();
     if (user) {
       dispatch(loginUser(user));
-      getFoldersUsers(user?.id).then(folders => {
+      Promise.all([getFoldersUsers(user?.id), getFiles(user?.id)]).then(([folders, files]) => {
         const { data: foldersData } = folders;
         const structureFolderData = parsestructureFolders(foldersData);
         dispatch(addAllFolder(foldersData));
         dispatch(addFoderStructure(structureFolderData));
+        dispatch(addAllFile(files.data)); 
         setHasUser(user);
       });
       return
     } else setHasUser(null);
-
 
     /* escuchando la sesion */
     const { data: listener } = clientSupabase.auth.onAuthStateChange(
@@ -32,13 +35,14 @@ export default function useUser() {
           setLoaderSession(true);
           const { user } = session;
           dispatch(loginUser(user));
-          getFoldersUsers(user?.id).then(folders => {
-            console.log("trayendo data de folders signin", user);
+          Promise.all([getFoldersUsers(user?.id), getFiles(user?.id)]).then(([folders, files]) => {
             const { data: foldersData } = folders;
             const structureFolderData = parsestructureFolders(foldersData);
             dispatch(addAllFolder(foldersData));
             dispatch(addFoderStructure(structureFolderData));
+            dispatch(addAllFile(files.data)); 
             setHasUser(user);
+            console.log(files);
             return null
           });
         }

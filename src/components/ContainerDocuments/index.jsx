@@ -1,5 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { Box, IconButton, Stack, Typography } from '@mui/material';
+import React, { useEffect, useState, useMemo } from 'react';
+import {
+	Box,
+	Card,
+	CardContent,
+	IconButton,
+	Stack,
+	Typography,
+} from '@mui/material';
 import ArrowDownwardOutlinedIcon from '@mui/icons-material/ArrowDownwardOutlined';
 import FolderUI from '../FolderUI';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
@@ -18,10 +25,12 @@ export default function ContainerDocuments() {
 	const location = useLocation();
 	const params = useParams();
 	const navigate = useNavigate();
+	const { files } = useSelector(state => state.files);
 	const { folders: foldersValue, foldersStructure } = useSelector(
 		state => state.folders
 	);
 
+	// llamar los foldes
 	useEffect(() => {
 		const paramsId = params?.id;
 		const path = location.pathname;
@@ -36,6 +45,11 @@ export default function ContainerDocuments() {
 		const folders = foldersStructure[nameFoldersRoot];
 		setFoldersData(folders);
 	}, [location, foldersValue, foldersStructure]);
+
+	const filesResult = useMemo(() => {
+		const id = params.id ?? 0
+		return files.filter(file => file.foldersId === Number(id) );
+	}, [params, files]);
 
 	return (
 		<Box component='section' mt={2}>
@@ -53,6 +67,30 @@ export default function ContainerDocuments() {
 					<FolderUI key={folder.id} {...folder} />
 				))}
 			</BoxFolder>
+
+			<Box my={3}>
+				<Typography fontSize={14} mb={2}>
+					Files
+				</Typography>
+				<Box
+					sx={{
+						display: 'grid',
+						'grid-template-columns': 'repeat(auto-fill, minmax(300px, 1fr))',
+						gap: '15px',
+						'& img': {
+							height: '180px',
+							objectFit: 'cover',
+							width: '100%',
+						},
+					}}
+				>
+					{filesResult.map(file => (
+						<Card key={file.name} elevation={1}>
+							<img src={file.key} />
+						</Card>
+					))}
+				</Box>
+			</Box>
 		</Box>
 	);
 }

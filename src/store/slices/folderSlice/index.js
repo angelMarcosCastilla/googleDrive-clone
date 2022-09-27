@@ -4,6 +4,7 @@ export const initialState = {
   folders: [],
   foldersStructure: {},
 };
+
 export const folderSlice = createSlice({
   name: "folder",
   initialState,
