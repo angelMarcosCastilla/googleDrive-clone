@@ -12,6 +12,7 @@ import FolderUI from '../FolderUI';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { styled } from '@mui/system';
+import CardFile from '../CardFile';
 
 const BoxFolder = styled(Box)(({ theme }) => ({
 	display: 'flex',
@@ -47,8 +48,8 @@ export default function ContainerDocuments() {
 	}, [location, foldersValue, foldersStructure]);
 
 	const filesResult = useMemo(() => {
-		const id = params.id ?? 0
-		return files.filter(file => file.foldersId === Number(id) );
+		const id = params.id ?? 0;
+		return files.filter(file => file.foldersId === Number(id));
 	}, [params, files]);
 
 	return (
@@ -75,7 +76,7 @@ export default function ContainerDocuments() {
 				<Box
 					sx={{
 						display: 'grid',
-						'grid-template-columns': 'repeat(auto-fill, minmax(300px, 1fr))',
+						'grid-template-columns': 'repeat(auto-fill, minmax(200px, 1fr))',
 						gap: '15px',
 						'& img': {
 							height: '180px',
@@ -85,9 +86,7 @@ export default function ContainerDocuments() {
 					}}
 				>
 					{filesResult.map(file => (
-						<Card key={file.name} elevation={1}>
-							<img src={file.key} />
-						</Card>
+						<CardFile key={file.name} file={file}></CardFile>
 					))}
 				</Box>
 			</Box>

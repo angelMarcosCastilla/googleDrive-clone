@@ -139,7 +139,7 @@ function PrimarySearchAppBar({ children }) {
 
 	const menuFolder = useMemo(() => {
 		return subnivelesFolder(folders);
-	}, []);
+	}, [folders]);
 
 	return (
 		<LayoutStyles>
