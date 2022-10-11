@@ -5,6 +5,7 @@ import Login from '../pages/Login';
 import PrivateRouter from './PrivateRouter';
 import MainLayout from '../layout/Main';
 import NotFound from '../pages/NotFound';
+import Papelera from '../pages/Papelera';
 const Home = LazyLoader(lazy(() => import('../pages/Home')));
 const Folders = LazyLoader(lazy(() => import('../pages/Folders')));
 
@@ -21,6 +22,7 @@ export default function RouterApp() {
 				}
 			>
 				<Route path='/' element={<Home />} />
+				<Route path='/papelera' element={<Papelera />} />
 				<Route path='/folders/:id' element={<Folders />} />
 			</Route>
 		</Routes>

@@ -24,11 +24,11 @@ export async function createFile({ name, key, foldersId, userId }) {
 export async function getFiles(userId) {
   try {
     const result = await clientSupabase.from("files")
-    .select("*")
-    .eq("estado", true)
-    .match({
-      userId
-    })
+      .select("*")
+      .eq("estado", true)
+      .match({
+        userId
+      })
 
     return result
   } catch (error) {
@@ -50,6 +50,41 @@ export const solfDeleteFile = async (id) => {
 export const updateFile = async (id, data) => {
   try {
     const result = await clientSupabase.from("files").update(data).match({
+      id,
+    })
+    return result
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export const restablecerFile = async (id) => {
+  try {
+    const result = await clientSupabase.from("files").update({ estado: true }).match({
+      id,
+    })
+    return result
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export const filesDelete = async (userId) => {
+  try {
+    const result = await clientSupabase.from("files").select("*").match({
+      estado: false,
+      userId
+    })
+    return result
+  } catch (error) {
+    console.log(error)
+  }
+
+}
+
+export const deleteFile = async (id) => {
+  try {
+    const result = await clientSupabase.from("files").delete().match({
       id,
     })
     return result
